@@ -8,6 +8,8 @@ import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.propagation.back.Backpropagation;
 
+import com.leapmotion.leap.Leap;
+
 public class SignLanguageNN {
 
 	/**
@@ -27,7 +29,7 @@ public class SignLanguageNN {
 	public static double IDEAL[][] = { { 1.0, 0.0 }, { 0.0, 0.0 } };
 
 	public static void main(String[] args) {
-
+		
 		BasicNetwork network = new BasicNetwork();
 
 		// input layer - 14 joints to a hand so 28 neurons needed
