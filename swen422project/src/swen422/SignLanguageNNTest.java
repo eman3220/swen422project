@@ -10,7 +10,7 @@ import org.encog.neural.networks.training.propagation.back.Backpropagation;
 
 import com.leapmotion.leap.Leap;
 
-public class SignLanguageNN {
+public class SignLanguageNNTest {
 
 	/**
 	 * The input.

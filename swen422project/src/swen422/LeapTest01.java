@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.leapmotion.leap.Bone;
 import com.leapmotion.leap.Controller;
@@ -54,6 +55,8 @@ class SampleListener extends Listener {
 
 		HandList hands = frame.hands();
 		System.out.println("Hands: "+hands.count());
+		
+		ArrayList<Float> handData = new ArrayList<Float>();
 
 		for (Hand hand : hands) {
 			System.out.println();
@@ -66,8 +69,14 @@ class SampleListener extends Listener {
 					// ... Use the bone
 					System.out.println("The bone type is here: "+boneType);
 					System.out.println("The vector we need is here: "+bone.center().toString());
+					
+					handData.add(bone.center().getX());
+					handData.add(bone.center().getY());
+					handData.add(bone.center().getZ());
 				}
 			}
 		}
+		
+		System.out.println("Hand Data size: "+handData.size());
 	}
 }
