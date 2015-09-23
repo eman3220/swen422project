@@ -176,6 +176,16 @@ public class SignLanguageMain {
 		this.leapListener = new SimpleListener();
 
 		this.leapController.addListener(leapListener);
+
+		System.out.println("Press Enter to quit...");
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Remove the sample listener when done
+		leapController.removeListener(leapListener);
 	}
 
 	/**
@@ -248,7 +258,7 @@ class SimpleListener extends Listener {
 	public boolean classifying = false;
 	public boolean flipper = false;
 	public int count = 0;
-	
+
 	float h1MinX = Float.MAX_VALUE;
 	float h1MinY = Float.MAX_VALUE;
 	float h1MinZ = Float.MAX_VALUE;
@@ -270,16 +280,16 @@ class SimpleListener extends Listener {
 	public void onFrame(Controller controller) {
 		System.out.println("start");
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(classifying){
+		if (classifying) {
 			System.out.println("Classifying...");
 			return;
 		}
-		
+
 		System.out.println("Count " + count++);
 
 		Frame frame = controller.frame();
@@ -288,7 +298,7 @@ class SimpleListener extends Listener {
 		System.out.println("hands");
 		ArrayList<Float> handData = getHandData(hands);
 		System.out.println("handdata");
-		if(handData.isEmpty()){
+		if (handData.isEmpty()) {
 			System.out.println("No Data...");
 			return;
 		}
@@ -296,19 +306,20 @@ class SimpleListener extends Listener {
 		ArrayList<Float> normalized = getNormalizedData(handData);
 		System.out.println("normalized");
 		double[] transformed = new double[normalized.size()];
-		for(int i=0;i<normalized.size();i++)transformed[i] = (double)normalized.get(0);
+		for (int i = 0; i < normalized.size(); i++)
+			transformed[i] = (double) normalized.get(0);
 		System.out.println("transform");
 		String output = classify(transformed);
-		System.out.println("Output: "+output);
+		System.out.println("Output: " + output);
 	}
 
 	private String classify(double[] transformed) {
 		classifying = true;
 		BasicNetwork net = SignLanguageMain.proofOfConcept;
 		final MLData output = net.compute(new BasicMLData(transformed));
-		String toReturn = output.getData(0)+","+output.getData(1); 
-		//String toReturn = "poo,wee";
-		//Encog.getInstance().shutdown();
+		String toReturn = output.getData(0) + "," + output.getData(1);
+		// String toReturn = "poo,wee";
+		// Encog.getInstance().shutdown();
 		classifying = false;
 		return toReturn;
 	}
