@@ -278,7 +278,7 @@ class SimpleListener extends Listener {
 	}
 
 	public void onFrame(Controller controller) {
-		System.out.println("start");
+		//System.out.println("start");
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
@@ -286,31 +286,64 @@ class SimpleListener extends Listener {
 			e.printStackTrace();
 		}
 		if (classifying) {
-			System.out.println("Classifying...");
+			System.out.println("Already Classifying Something...");
 			return;
 		}
 
 		System.out.println("Count " + count++);
 
 		Frame frame = controller.frame();
-		System.out.println("frame");
+		//System.out.println("frame");
 		HandList hands = frame.hands();
-		System.out.println("hands");
+		//System.out.println("hands");
 		ArrayList<Float> handData = getHandData(hands);
-		System.out.println("handdata");
+		//System.out.println("handdata");
 		if (handData.isEmpty()) {
 			System.out.println("No Data...");
 			return;
 		}
 
 		ArrayList<Float> normalized = getNormalizedData(handData);
-		System.out.println("normalized");
+		//System.out.println("normalized");
 		double[] transformed = new double[normalized.size()];
 		for (int i = 0; i < normalized.size(); i++)
 			transformed[i] = (double) normalized.get(0);
-		System.out.println("transform");
+		//System.out.println("transform");
 		String output = classify(transformed);
-		System.out.println("Output: " + output);
+		//System.out.println("Output: " + output);
+		System.out.println(interpretOutput(output));
+	}
+
+	private String interpretOutput(String output) {
+		String[] a = output.split(",");
+		int index = -1;
+		double strongest = Double.MIN_VALUE;
+		
+		for(int i=0;i<a.length;i++){
+			String next = a[i];
+			double value = Double.parseDouble(next);
+			if(strongest<value){
+				strongest = value;
+				index = i;
+			}
+		}
+		
+		String toReturn = "";
+		
+		switch (index) {
+		case 0:
+			toReturn = "This is a palm facing down";
+			break;
+		case 1:
+			toReturn = "This is a palm facing up";
+			break;
+			
+		default:
+			toReturn = "I don't know what this is";
+			break;
+		}
+		
+		return toReturn;
 	}
 
 	private String classify(double[] transformed) {
