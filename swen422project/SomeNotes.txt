@@ -1,6 +1,0 @@
-NOTES
-
-Neural Network needs 60 input nodes per hand.
-
-5 fingers x 4 bones x 3 vector values
-
